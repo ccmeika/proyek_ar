@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+    
+    <style>
+      #ui { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100; text-align: center; }
+      button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #e74c3c; color: white; border: none; border-radius: 5px; }
+      #caption { background: rgba(0,0,0,0.7); color: white; padding: 8px; border-radius: 5px; margin-bottom: 10px; font-family: sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="ui">
+      <div id="caption">Fase 1: Telur</div>
+      <button onclick="nextPhase()">Ganti Fase</button>
+    </div>
+
+    <a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <a-asset-item id="m1" src="telur.glb"></a-asset-item>
+        <a-asset-item id="m2" src="ulat.glb"></a-asset-item>
+        <a-asset-item id="m3" src="kepompong.glb"></a-asset-item>
+        <a-asset-item id="m4" src="kupu.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-gltf-model id="fase1" src="#m1" rotation="0 0 0" position="0 0 0" scale="0.1 0.1 0.1" visible="true"></a-gltf-model>
+        <a-gltf-model id="fase2" src="#m2" rotation="0 0 0" position="0 0 0" scale="0.1 0.1 0.1" visible="false"></a-gltf-model>
+        <a-gltf-model id="fase3" src="#m3" rotation="0 0 0" position="0 0 0" scale="0.1 0.1 0.1" visible="false"></a-gltf-model>
+        <a-gltf-model id="fase4" src="#m4" rotation="0 0 0" position="0 0 0" scale="0.1 0.1 0.1" visible="false"></a-gltf-model>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      let current = 1;
+      const text = ["Fase 1: Telur", "Fase 2: Ulat", "Fase 3: Kepompong", "Fase 4: Kupu-kupu"];
+      
+      function nextPhase() {
+        document.querySelector(`#fase${current}`).setAttribute('visible', 'false');
+        current = current < 4 ? current + 1 : 1;
+        document.querySelector(`#fase${current}`).setAttribute('visible', 'true');
+        document.getElementById('caption').innerText = text[current-1];
+      }
+    </script>
+  </body>
+</html>
